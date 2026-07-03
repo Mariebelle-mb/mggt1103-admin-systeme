@@ -8,4 +8,4 @@ Un ingénieur DevOps/SRE, en revanche, adopte une approche automatisée et proac
 
 ## Captures d'écran
 
-[Insère ici ta capture d'écran montrant `uname -a` et `free -h` exécutées dans la VM Vagrant]
+![Capture terminal VM](capture-vm.png)
