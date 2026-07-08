@@ -1,0 +1,44 @@
+---
+- name: Configuration et Securisation du Serveur Web Production
+  hosts: serveurs_web
+  become: true
+
+  tasks:
+    - name: Mettre a jour les paquets systeme (apt update)
+      apt:
+        update_cache: yes
+
+    - name: Installer le serveur Web Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Autoriser le trafic SSH pour ne pas perdre la main
+      ufw:
+        rule: allow
+        port: '22'
+        proto: tcp
+
+    - name: Autoriser le trafic HTTP (Port 80) pour le serveur Web
+      ufw:
+        rule: allow
+        port: '80'
+        proto: tcp
+
+    - name: Activer le pare-feu applicatif (UFW)
+      ufw:
+        state: enabled
+
+    - name: Deployer la page web de l Universite Espoir d Afrique
+      copy:
+        content: "<h1>Serveur Securise par le Master GGT via Ansible !</h1>"
+        dest: /var/www/html/index.html
+        owner: www-data
+        group: www-data
+        mode: '0644'
+
+    - name: Demarrer et activer Nginx au boot
+      service:
+        name: nginx
+        state: started
+        enabled: yes
