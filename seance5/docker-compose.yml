@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # 1. NOTRE APPLICATION WEB (L'API)
+  api-web:
+    build: .  # Demande à Docker de lire notre Dockerfile pour fabriquer l'image
+    container_name: ggt-api
+    ports:
+      - "8080:5000"  # Redirige le port 8080 de la machine vers le port 5000 du conteneur
+    environment:
+      - DB_USER=admin_ggt
+      - DB_PASS=M0tDePasseSecret!
+    networks:
+      - reseau-interne
+    depends_on:
+      - base-donnees  # L'API attendra que la base de données soit lancée
+
+  # 2. NOTRE BASE DE DONNÉES (PostgreSQL)
+  base-donnees:
+    image: postgres:15-alpine  # On utilise une image officielle toute prête
+    container_name: ggt-database
+    environment:
+      - POSTGRES_USER=admin_ggt
+      - POSTGRES_PASSWORD=M0tDePasseSecret!
+      - POSTGRES_DB=telecom_db
+    volumes:
+      - volume-bdd:/var/lib/postgresql/data  # Sauvegarde des données (Volume)
+    networks:
+      - reseau-interne
+    # NOTE SÉCURITÉ : Il n'y a pas de section "ports" !
+    # La base de données est invisible depuis l'extérieur du PC.
+
+# Déclaration de notre Volume (notre "clé USB" de sauvegarde)
+volumes:
+  volume-bdd:
+
+# Déclaration de notre réseau privé fermé
+networks:
+  reseau-interne:
+    driver: bridge
