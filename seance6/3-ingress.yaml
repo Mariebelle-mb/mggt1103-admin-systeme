@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-public
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "false" # On ne force pas le HTTPS pour ce TP
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: service-web-interne # On redirige la requête vers notre standardiste
+            port:
+              number: 80

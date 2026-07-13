@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: serveur-web-app # Le nom global de l'usine à clones
+  labels:
+    app: site-ggt # Une étiquette pour retrouver facilement nos applications
+spec:
+  replicas: 3 # Je veux exactement 3 clones (Pods) de cette application !
+  selector:
+    matchLabels:
+      app: site-ggt # Ce Deployment gère tous les Pods ayant cette étiquette
+  template: # Le modèle du Pod à cloner
+    metadata:
+      labels:
+        app: site-ggt
+    spec:
+      containers:
+      - name: serveur-nginx
+        image: nginx:alpine # L'image Docker que le musicien va jouer
+        ports:
+        - containerPort: 80

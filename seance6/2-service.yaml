@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-web-interne # Le nom de notre standardiste
+spec:
+  selector:
+    app: site-ggt # Il va distribuer le trafic à tous les Pods ayant cette étiquette
+  ports:
+    - protocol: TCP
+      port: 80 # Le port d'écoute du standardiste
+      targetPort: 80 # Le port des conteneurs Nginx
